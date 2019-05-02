@@ -18,6 +18,8 @@ var size;
 var food;
 
 var id;
+var color;
+
 
 function init() {
   ctx = $('#canvas')[0].getContext("2d");
@@ -32,6 +34,16 @@ function init() {
 
   id = setInterval(step, 100);
 }
+function changecolor(){
+  var letters ="0123456789ABCDEF";
+  var color = "#";
+  var colors= "#34FFFF";
+  for (var i = 0; i < 6; i++){
+    color += letters[Math.floor(Math.random()*16)];
+  }
+  return color;
+}
+
 
 function onKeyDown(evt) {
   if (evt.keyCode == 32) {
@@ -53,6 +65,7 @@ if ($.browser.mozilla) {
 }
 
 function createsnake() {
+  color = changecolor();
   snake = Array();
   var head = Array();
   head.x = WIDTH/2;
@@ -127,8 +140,12 @@ function movesnake() {
 
   // if there's food there
   if (meal(n)) {
+    color = changecolor();
     newfood(); // we eat it and another shows up
-    
+
+
+
+
   } else {
     snake.pop();
     // we only remove the tail if there wasn't food
@@ -167,7 +184,7 @@ function screenclear() {
 }
 
 function drawsnake() {
-  ctx.fillStyle = "#FFFFFF";
+    ctx.fillStyle = color;
   snake.forEach(function(p) {
     rect(p.x, p.y, dx, dy);
   })
