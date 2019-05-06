@@ -142,10 +142,7 @@ function movesnake() {
   if (meal(n)) {
     color = changecolor();
     newfood(); // we eat it and another shows up
-
-
-
-
+ 
   } else {
     snake.pop();
     // we only remove the tail if there wasn't food
