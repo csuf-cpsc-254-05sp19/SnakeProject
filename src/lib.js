@@ -190,4 +190,15 @@ function drawsnake() {
 function drawfood() {
   ctx.fillStyle = "#FF0000";
   circle(food.x+food.r, food.y+food.r, food.r);
+  foodBounce();
+}
+
+function foodBounce()
+{
+  if (food.x + dx > WIDTH || food.x + dx < 0)
+    dx = -dx;
+  if (food.y + dy > HEIGHT || food.y + dy < 0)
+    dy = -dy;
+  food.x += dx;
+  food.y += dy;
 }
