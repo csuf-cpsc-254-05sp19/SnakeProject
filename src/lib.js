@@ -2,9 +2,15 @@ var ctx;
 var WIDTH;
 var HEIGHT;
 
+var xVelocity = 8;
+var yVelocity =8;
+
+
+
+var dr = 10;
 var dx = 20;
 var dy = 20;
-var dr = 10;
+
 
 // 0: left
 // 1: up
@@ -20,7 +26,6 @@ var food;
 var id;
 var color;
 
-
 function init() {
   ctx = $('#canvas')[0].getContext("2d");
   WIDTH = $("#canvas").width();
@@ -34,6 +39,33 @@ function init() {
 
   id = setInterval(step, 100);
 }
+
+function foodBounce()
+{
+// bounce function
+  food.x += xVelocity;
+  food.y += yVelocity;
+
+  if (food.x - food.r < 0){
+    xVelocity = -xVelocity;
+  }
+  if(food.x + food.r > WIDTH)
+  {
+    xVelocity = - xVelocity;
+  }
+  if (food.y - food.r < 0)
+  {
+    yVelocity = -yVelocity;
+  }
+  if (food.y + food.r > HEIGHT)
+  {
+    yVelocity = -yVelocity;
+  }
+
+
+
+}
+
 function changecolor(){
   var letters ="0123456789ABCDEF";
   var color = "#";
@@ -68,8 +100,8 @@ function createsnake() {
   color = changecolor();
   snake = Array();
   var head = Array();
-  head.x = WIDTH/2;
-  head.y = HEIGHT/2;
+  head.x = WIDTH/4;
+  head.y = HEIGHT/4;
   snake.push(head);
 }
 
@@ -129,6 +161,7 @@ function movesnake() {
       n.x = h.x;
       n.y = h.y + dy;
       break;
+
   }
 
   // if out of box or collision with ourselves, we die
@@ -142,7 +175,10 @@ function movesnake() {
   if (meal(n)) {
     color = changecolor();
     newfood(); // we eat it and another shows up
- 
+
+
+
+
   } else {
     snake.pop();
     // we only remove the tail if there wasn't food
@@ -188,17 +224,7 @@ function drawsnake() {
 }
 
 function drawfood() {
-  ctx.fillStyle = "#FF0000";
+  ctx.fillStyle = "#FFFFFF";
   circle(food.x+food.r, food.y+food.r, food.r);
   foodBounce();
-}
-
-function foodBounce()
-{
-  if (food.x + dx > WIDTH || food.x + dx < 0)
-    dx = -dx;
-  if (food.y + dy > HEIGHT || food.y + dy < 0)
-    dy = -dy;
-  food.x += dx;
-  food.y += dy;
 }
