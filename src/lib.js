@@ -5,7 +5,8 @@ var HEIGHT;
 var dx = 20;
 var dy = 20;
 var dr = 10;
-
+var xVelocity = 4;
+var yVelocity = 4;
 // 0: left
 // 1: up
 // 2: right
@@ -18,8 +19,6 @@ var size;
 var food;
 
 var id;
-var color;
-
 
 function init() {
   ctx = $('#canvas')[0].getContext("2d");
@@ -34,6 +33,26 @@ function init() {
 
   id = setInterval(step, 100);
 }
+
+function onKeyDown(evt) {
+  if (evt.keyCode == 32) {
+    return;
+  }
+  newdir = evt.keyCode - 37;
+
+  // only lateral turns are allowed
+  // (that is, no u-turns)
+  if (newdir != direction && newdir != direction+2 && newdir != direction-2) {
+    direction = newdir;
+  }
+}
+
+if ($.browser.mozilla) {
+    $(document).keypress(onKeyDown);
+} else {
+    $(document).keydown(onKeyDown);
+}
+
 function changecolor(){
   var letters ="0123456789ABCDEF";
   var color = "#";
@@ -42,6 +61,28 @@ function changecolor(){
     color += letters[Math.floor(Math.random()*16)];
   }
   return color;
+}
+
+function foodBounce()
+{
+// bounce function
+  if (food.x + dr < 0){
+    xVelocity = -xVelocity;
+  }
+  if(food.x + dr > WIDTH)
+  {
+    xVelocity = - xVelocity;
+  }
+  if (food.y + dr < 0)
+  {
+    yVelocity = -yVelocity;
+  }
+  if (food.y + dr > HEIGHT)
+  {
+    yVelocity = -yVelocity;
+  }
+  food.x += xVelocity;
+  food.y += yVelocity;
 }
 
 
@@ -103,7 +144,15 @@ function newfood() {
 }
 
 function meal(n) {
-  return (n.x == food.x && n.y == food.y);
+  if(n.x<=food.x+food.r+2 && n.x >=food.x-food.r-2){
+    if(n.y <=food.y + food.r+2 && n.y>= food.y- food.r-2){return true;}
+    else{return false;}
+  }
+  else{return false;}
+
+
+
+  //return (n.x == food.x && n.y == food.y);
 }
 
 function movesnake() {
@@ -129,6 +178,7 @@ function movesnake() {
       n.x = h.x;
       n.y = h.y + dy;
       break;
+
   }
 
   // if out of box or collision with ourselves, we die
@@ -142,6 +192,9 @@ function movesnake() {
   if (meal(n)) {
     color = changecolor();
     newfood(); // we eat it and another shows up
+
+
+
 
   } else {
     snake.pop();
@@ -187,19 +240,8 @@ function drawsnake() {
   })
 }
 
-function foodBounce()
-{
-  if (food.x + dx > WIDTH || food.x + dx < 0)
-    dx = -dx;
-  if (food.y + dy > HEIGHT || food.y + dy < 0)
-    dy = -dy;
-  food.x += dx;
-  food.y += dy;
-}
-
-
 function drawfood() {
-  ctx.fillStyle = "#FF0000";
+  ctx.fillStyle = "#FFFFFF";
   circle(food.x+food.r, food.y+food.r, food.r);
   foodBounce();
 }
