@@ -1,1 +1,38 @@
+#1 : TEAM MEMBER INFORMATION	
+Ramirez, Omar
+Trevizo, Mina
+Vergara, Alexis 
 
+#2: AN OVERVIEW OF PROJECT/PROJECT IDEA
+    • We will be taking an existing source code of the Snake game and altering some features.
+    • Some features to be altered:
+        ◦ Color of the Snake itself
+        ◦ Snake changes color every time it eats a new food.
+        ◦ Shape of the snake.
+        ◦ Snake changes shape every time it eats new food.
+        ◦ We will make the food the snake eats bounce around instead of staying in one location
+        ◦ The food changes colors every time it bounces of a wall of the canvas.
+    • We want to make this add a variety of features to make this Snake game less simple and different unique visual effects.
+
+#3: GOALS OF YOUR SOFTWARE
+    • We want to take existing source code and alter it.
+    • Apon altering the existing code, we want to make sure it runs properly with the modification we make.
+    • We will be able to make our modifications noticeable.
+    • We want to make the game visually appealing to the user.
+
+#4: RESOURCES USED TO BUILD YOUR SOFTWAR
+    • Github link of repository:
+    • We use Github to keep track up updates we do to any of the source code.
+    • We will use an existing open source code.
+
+#5: MENTION HOW YOU WOULD USE THESE RESOURCES IN YOUR PROJECT
+    • We would download the github repository and then change the code to our project idea/goal
+    • We be able to use github to commit code with comments to help better understand changes being made.
+    • The existing source code will guide us to makes new modifications.
+
+#6 NEW FEATURES TO EXISTING PROJECT
+    • Adding different colors to the Snake
+    • Changing the board/map/background of the game to make it more visually appealing to those who play it.
+    • Changing items that are used within the game.
+    • Changing to overall shapes of some main object as one is playing the game.
+    • Possibly adding different objects to the background/map/board
