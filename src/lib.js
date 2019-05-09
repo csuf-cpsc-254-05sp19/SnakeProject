@@ -20,6 +20,9 @@ var food;
 
 var id;
 var foodColor = changeFoodColor();
+var minmum_amount_of_shapes=1;
+var maximum_amount_of_shapes=3;
+var shape_id;
 
 function init() {
   ctx = $('#canvas')[0].getContext("2d");
@@ -69,7 +72,6 @@ function changeFoodColor() {
 function changecolor(){
   var letters ="0123456789ABCDEF";
   var color = "#";
-  var colors= "#34FFFF";
   for (var i = 0; i < 6; i++){
     color += letters[Math.floor(Math.random()*16)];
   }
@@ -200,9 +202,15 @@ function movesnake() {
   if (meal(n)) {
     color = changecolor();
     newfood(); // we eat it and another shows up
+    drawsnake();
+    /*since we so far only have two shapes, we will keep the number of id between 1-2. if and when we add more shapes, the ID of that shape will increase by one
+    ==shape_id list:==
+      1: rectangle
+      2: triangle
+    */
 
 
-
+    shape_id =Math.floor(Math.random() * (maximum_amount_of_shapes - minmum_amount_of_shapes)) + minmum_amount_of_shapes;
 
   } else {
     snake.pop();
@@ -230,6 +238,14 @@ function circle(x,y,r) {
   ctx.closePath();
   ctx.fill();
 }
+function snakecircle(x,y,r){
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, Math.PI*2, true);
+  //ctx.lineWidth = 10;
+  //ctx.stroke();
+  ctx.closePath();
+  ctx.fill();
+}
 
 function rect(x,y,w,h) {
   ctx.beginPath();
@@ -249,24 +265,6 @@ function tri(x, y, w, h)
   ctx.fill();
 }
 
-//creates a more snake-like rectangle body
-//function roundedRect(ctx, x, y, width, height, radius) {
-//  ctx.beginPath();
-//  ctx.moveTo(x, y + radius);
-//  ctx.lineTo(x, y + height - radius);
-//  ctx.arcTo(x, y + height, x + radius, y + height, radius);
-//  ctx.lineTo(x + width - radius, y + height);
-//  ctx.arcTo(x + width, y + height, x + width, y + height-radius, radius);
-//  ctx.lineTo(x + width, y + radius);
-//  ctx.arcTo(x + width, y, x + width - radius, y, radius);
-//  ctx.lineTo(x + radius, y);
-//  ctx.arcTo(x, y, x, y + radius, radius);
-//  ctx.stroke();
-//  ctx.closePath();
-//  ctx.fill();
-//}
-
-
 function screenclear() {
   ctx.fillStyle = "#000000";
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
@@ -275,9 +273,23 @@ function screenclear() {
 
 function drawsnake() {
     ctx.fillStyle = color;
+    if(shape_id == 1){
+      //ctx.fillStyle = color;
+      snake.forEach(function(p) {
+        rect(p.x, p.y, dx, dy);
+      })
+    }
+    else if(shape_id == 2){
+      //ctx.fillStyle = color;
   snake.forEach(function(p) {
     tri(p.x, p.y, dx, dy);
   })
+}
+  else{
+    snake.forEach(function(p) {
+    snakecircle(p.x+food.r, p.y+food.r, food.r);
+  })
+}
 }
 
 function drawfood() {
