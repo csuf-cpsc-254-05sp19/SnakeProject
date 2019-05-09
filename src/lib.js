@@ -5,8 +5,8 @@ var HEIGHT;
 var dx = 20;
 var dy = 20;
 var dr = 10;
-var xVelocity = 4;
-var yVelocity = 4;
+var xVelocity = 8;
+var yVelocity = 8;
 // 0: left
 // 1: up
 // 2: right
@@ -19,6 +19,7 @@ var size;
 var food;
 
 var id;
+var foodColor = changeFoodColor();
 
 function init() {
   ctx = $('#canvas')[0].getContext("2d");
@@ -53,6 +54,18 @@ if ($.browser.mozilla) {
     $(document).keydown(onKeyDown);
 }
 
+//function changes the color of the
+//food everytime it bounces off the
+//wall.
+function changeFoodColor() {
+    var letters = 'ABCDE'.split('');
+    var foodColor = '#';
+    for (var i=0; i<6; i++ ) {
+        foodColor += letters[Math.floor(Math.random() * letters.length)];
+    }
+    return foodColor;
+}
+
 function changecolor(){
   var letters ="0123456789ABCDEF";
   var color = "#";
@@ -63,28 +76,24 @@ function changecolor(){
   return color;
 }
 
+//makes food that snakes eats
 function foodBounce()
 {
 // bounce function
-  if (food.x + dr < 0){
-    xVelocity = -xVelocity;
-  }
-  if(food.x + dr > WIDTH)
-  {
-    xVelocity = - xVelocity;
-  }
-  if (food.y + dr < 0)
-  {
-    yVelocity = -yVelocity;
-  }
-  if (food.y + dr > HEIGHT)
-  {
-    yVelocity = -yVelocity;
-  }
-  food.x += xVelocity;
-  food.y += yVelocity;
-}
 
+if(food.x + dr > WIDTH || food.x + dr < 0)
+{
+  xVelocity = -xVelocity;
+  foodColor = changeFoodColor();
+}
+if(food.y + dr > HEIGHT || food.y + dr < 0)
+{
+  yVelocity = -yVelocity;
+  foodColor = changeFoodColor();
+}
+food.x += xVelocity;
+food.y += yVelocity
+}
 
 function onKeyDown(evt) {
   if (evt.keyCode == 32) {
@@ -136,6 +145,7 @@ function newfood() {
   var randomx = Math.floor(Math.random()*wcells);
   var randomy = Math.floor(Math.random()*hcells);
 
+  foodColor = changeFoodColor();
   food = Array();
   food.x = randomx * dx;
   food.y = randomy * dy;
@@ -149,8 +159,6 @@ function meal(n) {
     else{return false;}
   }
   else{return false;}
-
-
 
   //return (n.x == food.x && n.y == food.y);
 }
@@ -216,6 +224,9 @@ function die() {
 function circle(x,y,r) {
   ctx.beginPath();
   ctx.arc(x, y, r, 0, Math.PI*2, true);
+  ctx.lineWidth = 10;
+  ctx.strokeStyle = '#666666';
+  ctx.stroke();
   ctx.closePath();
   ctx.fill();
 }
@@ -223,6 +234,17 @@ function circle(x,y,r) {
 function rect(x,y,w,h) {
   ctx.beginPath();
   ctx.rect(x,y,w,h);
+  ctx.closePath();
+  ctx.fill();
+}
+
+//Creating a triangle
+function tri(x, y, w, h)
+{
+  ctx.beginPath();
+  ctx.moveTo(x, y);
+  ctx.lineTo(x + w / 2, y + h);
+  ctx.lineTo(x - w / 2, y + h);
   ctx.closePath();
   ctx.fill();
 }
@@ -254,12 +276,12 @@ function screenclear() {
 function drawsnake() {
     ctx.fillStyle = color;
   snake.forEach(function(p) {
-    rect(p.x, p.y, dx, dy);
+    tri(p.x, p.y, dx, dy);
   })
 }
 
 function drawfood() {
-  ctx.fillStyle = "#FFFFFF";
+  ctx.fillStyle = foodColor;
   circle(food.x+food.r, food.y+food.r, food.r);
   foodBounce();
 }
